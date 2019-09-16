@@ -1,4 +1,6 @@
 ﻿using System;
+using WallpaperMaster.DAL;
+using WallpaperMaster.Service;
 
 namespace WallpaperMaster.UI
 {
@@ -6,7 +8,10 @@ namespace WallpaperMaster.UI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            CommitStripRepository commitStripRepository = new CommitStripRepository();
+            CommitStripService commitStripService = new CommitStripService(commitStripRepository);
+            commitStripService.GetPicture();
+            Console.WriteLine("Got the fucking picture");
         }
     }
 }

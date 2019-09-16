@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using WallpaperMaster.DAL;
 
 namespace WallpaperMaster.Service
@@ -12,7 +13,7 @@ namespace WallpaperMaster.Service
         }
         public void GetPicture()
         {
-
+            JObject site = _commitStripRepository.GetSite().Result;
         }
     }
 }
