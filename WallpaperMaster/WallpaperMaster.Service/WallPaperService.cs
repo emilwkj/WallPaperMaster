@@ -18,11 +18,14 @@ namespace WallpaperMaster.Service
 
         public bool SetWallPaper(string wallpaperFile)
         {
-            if(_wallPaperRepository.SetBackGround(wallpaperFile) == 1)
+            try
             {
+                _wallPaperRepository.SetWallPaper(wallpaperFile, WallPaperRepository.Style.Centered);
                 return true;
+            } catch
+            {
+                return false;
             }
-            return false;
         }
     }
 }

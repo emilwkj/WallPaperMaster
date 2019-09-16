@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,28 +11,45 @@ namespace WallpaperMaster.DAL
 {
     public class WallPaperRepository
     {
-        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
-        public static extern int SystemParametersInfo(UAction uAction, int uParam, StringBuilder lpvParam, int fuWinIni);
-        public enum UAction
+        const int SPI_SETDESKWALLPAPER = 20;
+        const int SPIF_UPDATEINIFILE = 0x01;
+        const int SPIF_SENDWININICHANGE = 0x02;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+        public enum Style : int
         {
-            /// <summary>
-            /// set the desktop background image
-            /// </summary>
-            SPI_SETDESKWALLPAPER = 0x0014,
-            /// <summary>
-            /// set the desktop background image
-            /// </summary>
-            SPI_GETDESKWALLPAPER = 0x0073,
+            Tiled,
+            Centered,
+            Stretched
         }
-        public int SetBackGround(string wallpaperFile)
+
+        public void SetWallPaper(string tempPath, Style style)
         {
-            int result = 0;
-            if (File.Exists(wallpaperFile))
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
+            if (style == Style.Stretched)
             {
-                StringBuilder s = new StringBuilder(wallpaperFile);
-                result = SystemParametersInfo(UAction.SPI_SETDESKWALLPAPER, 0, s, 0x2);
+                key.SetValue(@"WallpaperStyle", 2.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
             }
-            return result;
+
+            if (style == Style.Centered)
+            {
+                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
+            }
+
+            if (style == Style.Tiled)
+            {
+                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"TileWallpaper", 1.ToString());
+            }
+
+            SystemParametersInfo(SPI_SETDESKWALLPAPER,
+                0,
+                tempPath,
+                SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
         }
     }
+
 }
