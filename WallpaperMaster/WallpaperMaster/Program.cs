@@ -14,10 +14,17 @@ namespace WallpaperMaster.UI
 
             //Service
             CommitStripService commitStripService = new CommitStripService(httpRepository);
-            
-            commitStripService.SaveLatestStrip(@"C:\Temp\wallpaper.jpg");
+            WallPaperService wallPaperService = new WallPaperService(wallPaperRepository);
 
-            Console.WriteLine("Got the fucking picture");
+            //variables
+            string wallPaperSaveLocation = @"C:\Temp\wallpaper.jpg";
+
+            //Do the actual work
+            commitStripService.SaveLatestStrip(wallPaperSaveLocation);
+            wallPaperService.SetWallPaper(wallPaperSaveLocation);
+
+            //Write status to user
+            Console.WriteLine("Jaw jo, your wallpaper has been changed");
         }
     }
 }
