@@ -8,9 +8,15 @@ namespace WallpaperMaster.UI
     {
         static void Main(string[] args)
         {
-            CommitStripRepository commitStripRepository = new CommitStripRepository();
-            CommitStripService commitStripService = new CommitStripService(commitStripRepository);
-            commitStripService.GetPicture();
+            //Repo
+            HttpRepository httpRepository = new HttpRepository();
+            WallPaperRepository wallPaperRepository = new WallPaperRepository();
+
+            //Service
+            CommitStripService commitStripService = new CommitStripService(httpRepository);
+            
+            commitStripService.SaveLatestStrip(@"C:\Temp\wallpaper.jpg");
+
             Console.WriteLine("Got the fucking picture");
         }
     }

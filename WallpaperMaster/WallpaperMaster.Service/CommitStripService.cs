@@ -8,19 +8,31 @@ namespace WallpaperMaster.Service
 {
     public class CommitStripService
     {
-        private readonly CommitStripRepository _commitStripRepository;
-        public CommitStripService(CommitStripRepository commitStripRepository)
+        private readonly HttpRepository _httpRepository;
+        public CommitStripService(HttpRepository httpRepository)
         {
-            _commitStripRepository = commitStripRepository;
+            _httpRepository = httpRepository;
         }
-        public string GetPictureURL()
-        {
-            string site = _commitStripRepository.GetSite().Result;
-            HtmlDocument htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(site);
 
-            //Get the picture url
-            string imageSource = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='excerpt']//a//img").Attributes["src"].Value;
+        public void SaveLatestStrip(string saveLocation)
+        {
+            _httpRepository.DownloadPicture(GetPictureURL(), saveLocation);
+        }
+        private string GetPictureURL()
+        {
+            string homePage = _httpRepository.GetSite("http://www.commitstrip.com/en/?").Result;
+            HtmlDocument homePageDocument = new HtmlDocument();
+            homePageDocument.LoadHtml(homePage);
+
+            //Get the url for the newest strip
+            string linkToNewest = homePageDocument.DocumentNode.SelectSingleNode("//div[@class='excerpt']//a").Attributes["href"].Value;
+            
+            //Get picture from that url
+            string picturePage = _httpRepository.GetSite(linkToNewest).Result;
+            HtmlDocument picturePageDocument = new HtmlDocument();
+            picturePageDocument.LoadHtml(picturePage);
+
+            string imageSource = picturePageDocument.DocumentNode.SelectSingleNode("//div[@class='entry-content']//p//img").Attributes["src"].Value;
 
             return imageSource;
         }
