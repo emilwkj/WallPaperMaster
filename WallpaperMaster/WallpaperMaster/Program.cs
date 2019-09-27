@@ -8,9 +8,22 @@ namespace WallpaperMaster.UI
     {
         static void Main(string[] args)
         {
+            //Get OS Version
+            var osNameAndVersion = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+
             //Repo
             HttpRepository httpRepository = new HttpRepository();
-            WallPaperRepository wallPaperRepository = new WallPaperRepository();
+            IWallPaperRepository wallPaperRepository;
+
+            if(osNameAndVersion.StartsWith("Microsoft Windows 10"))
+            {
+                wallPaperRepository = new Windows10WallPaperRepository();
+            }
+            //Assume windows 7
+            else
+            {
+                wallPaperRepository = new Windows7WallPaperRepository();
+            }
 
             //Service
             CommitStripService commitStripService = new CommitStripService(httpRepository);

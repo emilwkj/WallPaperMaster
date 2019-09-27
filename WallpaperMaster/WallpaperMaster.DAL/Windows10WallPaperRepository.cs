@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WallpaperMaster.DAL
 {
-    public class WallPaperRepository
+    public class Windows10WallPaperRepository : IWallPaperRepository
     {
         const int SPI_SETDESKWALLPAPER = 20;
         const int SPIF_UPDATEINIFILE = 0x01;
@@ -17,31 +17,35 @@ namespace WallpaperMaster.DAL
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
-        public enum Style : int
-        {
-            Tiled,
-            Centered,
-            Stretched
-        }
 
-        public void SetWallPaper(string tempPath, Style style)
+        /// <summary>
+        /// Sets the wallpaper
+        /// </summary>
+        /// <param name="tempPath"></param>
+        /// <param name="style">
+        /// Style of wallpaper
+        /// 0 = Tiled
+        /// 1 = Centered
+        /// 2 = Stretched
+        /// </param>
+        public void SetWallPaper(string tempPath, int style)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
-            if (style == Style.Stretched)
+            if (style == 2)
             {
                 key.SetValue(@"WallpaperStyle", 2.ToString());
                 key.SetValue(@"TileWallpaper", 0.ToString());
             }
 
-            if (style == Style.Centered)
+            if (style == 1)
             {
-                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"WallpaperStyle", 0.ToString());
                 key.SetValue(@"TileWallpaper", 0.ToString());
             }
 
-            if (style == Style.Tiled)
+            if (style == 0)
             {
-                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"WallpaperStyle", 0.ToString());
                 key.SetValue(@"TileWallpaper", 1.ToString());
             }
 
