@@ -2,7 +2,10 @@
 WallPaperMaster is a simple application which gets the latest commit strip from www.commitstrip.com and sets it as your wallpaper
 
 ## Modes  
-WallPaperMaster has 2 Modes.  
+WallPaperMaster has 2 Modes. This is chosen when running the exe file.  
+To use Mode 2 just add 2 as a parameter.  
+Example:  
+C:\Users\JohnDoe\Desktop\Wallpapermaster\WallPaperMaster.UI.exe 2
 
 ### Mode 1  
 Mode 1 is the default mode that is used if nothing is specified. Mode 1 always sets the newest commitstrib available as your wallpaper.  
