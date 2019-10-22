@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WallpaperMaster.DAL;
 
@@ -10,8 +11,8 @@ namespace WallpaperMaster.Service
 {
     public class WallPaperService
     {
-        private readonly WallPaperRepository _wallPaperRepository;
-        public WallPaperService(WallPaperRepository wallPaperRepository)
+        private readonly IWallPaperRepository _wallPaperRepository;
+        public WallPaperService(IWallPaperRepository wallPaperRepository)
         {
             _wallPaperRepository = wallPaperRepository;
         }
@@ -20,7 +21,7 @@ namespace WallpaperMaster.Service
         {
             try
             {
-                _wallPaperRepository.SetWallPaper(wallpaperFile, WallPaperRepository.Style.Centered);
+                _wallPaperRepository.SetWallPaper(wallpaperFile, 1);
                 return true;
             } catch
             {
