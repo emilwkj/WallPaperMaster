@@ -8,11 +8,13 @@ namespace WallpaperMaster.UI
     {
         static void Main(string[] args)
         {
+            HttpRepository httpRepository = new HttpRepository();
+            DataRepository dataRepository = new DataRepository();
+            
             //Get OS Version
             var osNameAndVersion = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
 
             //Repo
-            HttpRepository httpRepository = new HttpRepository();
             IWallPaperRepository wallPaperRepository;
 
             if(osNameAndVersion.StartsWith("Microsoft Windows 10"))
@@ -26,14 +28,21 @@ namespace WallpaperMaster.UI
             }
 
             //Service
-            CommitStripService commitStripService = new CommitStripService(httpRepository);
+            CommitStripService commitStripService = new CommitStripService(httpRepository, dataRepository);
             WallPaperService wallPaperService = new WallPaperService(wallPaperRepository);
 
             //variables
             string wallPaperSaveLocation = @"C:\Temp\wallpaper.jpg";
 
             //Do the actual work
-            commitStripService.SaveLatestStrip(wallPaperSaveLocation);
+            if(args.Length > 0 && args[0] == "2")
+            {
+                commitStripService.SaveNextStribInOrder(wallPaperSaveLocation);
+            }
+            else
+            {
+                commitStripService.SaveLatestStrip(wallPaperSaveLocation);
+            }
             wallPaperService.SetWallPaper(wallPaperSaveLocation);
 
             //Write status to user
