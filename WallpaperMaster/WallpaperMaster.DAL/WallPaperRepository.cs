@@ -35,7 +35,7 @@ namespace WallpaperMaster.DAL
 
             if (style == Style.Centered)
             {
-                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"WallpaperStyle", 0.ToString());
                 key.SetValue(@"TileWallpaper", 0.ToString());
             }
 

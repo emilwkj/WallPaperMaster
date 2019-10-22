@@ -8,19 +8,26 @@ namespace WallpaperMaster.UI
     {
         static void Main(string[] args)
         {
-            //Repo
             HttpRepository httpRepository = new HttpRepository();
             WallPaperRepository wallPaperRepository = new WallPaperRepository();
+            DataRepository dataRepository = new DataRepository();
 
             //Service
-            CommitStripService commitStripService = new CommitStripService(httpRepository);
+            CommitStripService commitStripService = new CommitStripService(httpRepository, dataRepository);
             WallPaperService wallPaperService = new WallPaperService(wallPaperRepository);
 
             //variables
             string wallPaperSaveLocation = @"C:\Temp\wallpaper.jpg";
 
             //Do the actual work
-            commitStripService.SaveLatestStrip(wallPaperSaveLocation);
+            if(args.Length > 0 && args[0] == "2")
+            {
+                commitStripService.SaveNextStribInOrder(wallPaperSaveLocation);
+            }
+            else
+            {
+                commitStripService.SaveLatestStrip(wallPaperSaveLocation);
+            }
             wallPaperService.SetWallPaper(wallPaperSaveLocation);
 
             //Write status to user

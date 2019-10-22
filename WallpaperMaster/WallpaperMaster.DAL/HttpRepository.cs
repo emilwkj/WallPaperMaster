@@ -17,11 +17,15 @@ namespace WallpaperMaster.DAL
         }
         private async Task<string> GetAsync(string url)
         {
-            HttpClient client = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
-            var result = await client.SendAsync(request);
-            string stringResult = await result.Content.ReadAsStringAsync();
-            return stringResult;
+            using(HttpClient client = new HttpClient())
+            {
+                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+                    var result = await client.SendAsync(request);
+                    string stringResult = await result.Content.ReadAsStringAsync();
+                    return stringResult;
+                }
+            }
         }
         public bool DownloadPicture(string url, string downloadLocation)
         {

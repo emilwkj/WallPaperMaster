@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,5 +9,4 @@
     <ProjectReference Include="..\WallpaperMaster.DAL\WallpaperMaster.DAL.csproj" />
     <ProjectReference Include="..\WallpaperMaster.Service\WallpaperMaster.Service.csproj" />
   </ItemGroup>
-
 </Project>
